@@ -64,11 +64,6 @@ buttons.forEach(button =>{
                 currentOp = nextOp;
                 firstNum = previousAns;
                 secondNum = null;
-                // if(currentOp == "="){
-                //     currentCalc = [];
-                //     currentCalc.push(previousAns);
-                //     firstNum = null;
-                // }
                 console.log("secondNum: " + secondNum);
 
             }
