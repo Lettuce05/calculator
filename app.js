@@ -34,7 +34,7 @@ const answer = document.querySelector(".answer p");
 let previousAns = 0;
 let currentCalc = [];
 let currentNum = [], currentOp = "", nextOp = "";
-let num, op, firstNum = null, secondNum = null;
+let num, op, firstNum = 0, secondNum = 0;
 
 buttons.forEach(button =>{
     button.addEventListener("click", ()=>{
@@ -65,7 +65,6 @@ buttons.forEach(button =>{
                 firstNum = previousAns;
                 secondNum = null;
                 console.log("secondNum: " + secondNum);
-
             }
         }
         
