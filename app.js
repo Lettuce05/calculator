@@ -34,7 +34,7 @@ const answer = document.querySelector(".answer p");
 let previousAns = 0;
 let currentCalc = [];
 let currentNum = [], currentOp = "", nextOp = "";
-let num, op, firstNum = 0, secondNum = 0;
+let num, op, amountOfNum = 0, firstNum = null, secondNum = null;
 
 buttons.forEach(button =>{
     button.addEventListener("click", ()=>{
@@ -44,28 +44,45 @@ buttons.forEach(button =>{
             currentCalc.push(button.innerText);
             currentNum.push(button.innerText);
         } else if(button.innerText.match(op)){
-            currentCalc.push(` ${button.innerText} `);
-            currentNum.push(button.innerText);
-            if(firstNum == null){
-                firstNum = currentNum.join("");
-                firstNum = firstNum.split(`${button.innerText}`);
-                firstNum = parseInt(firstNum[0]);
-                currentOp = button.innerText;
-                currentNum = [];
-                console.log("firstNum: " + firstNum);
-            } else if(secondNum == null){
-                secondNum = currentNum.join("");
-                secondNum = secondNum.split(`${button.innerText}`);
-                nextOp = button.innerText;
-                secondNum = parseInt(secondNum[0]);
-                currentNum = [];
-                previousAns = operate(currentOp, firstNum, secondNum);
-                answer.innerText = previousAns;
-                currentOp = nextOp;
-                firstNum = previousAns;
-                secondNum = null;
-                console.log("secondNum: " + secondNum);
+            if(!currentCalc[currentCalc.length-1].match(op)){
+                currentCalc.push(` ${button.innerText} `);
+                currentNum.push(button.innerText);
             }
+            console.log(currentCalc);
+            //check if a num was inputted before operation
+            if(currentNum[0].match(op)){
+                currentNum = [previousAns, button.innerText];
+                amountOfNum++;
+                console.log(currentCalc);
+                if(currentCalc[0].match(op)){
+                    currentCalc = [previousAns, ` ${button.innerText} `];
+                }
+            } else{
+                amountOfNum++;
+                if(amountOfNum == 1){
+                    firstNum = currentNum.join("");
+                    firstNum = firstNum.split(`${button.innerText}`);
+                    firstNum = parseInt(firstNum[0]);
+                    currentNum.push(firstNum);
+                    currentNum.push(button.innerText);
+                }
+            }
+                
+                // currentNum = [];
+                // console.log("firstNum: " + firstNum);
+            
+                // secondNum = currentNum.join("");
+                // secondNum = secondNum.split(`${button.innerText}`);
+                // nextOp = button.innerText;
+                // secondNum = parseInt(secondNum[0]);
+                // currentNum = [];
+                // previousAns = operate(currentOp, firstNum, secondNum);
+                // answer.innerText = previousAns;
+                // currentOp = nextOp;
+                // firstNum = previousAns;
+                // secondNum = null;
+                // console.log("secondNum: " + secondNum);
+            
         }
         
         calculation.innerText = currentCalc.join("");
