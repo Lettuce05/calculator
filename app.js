@@ -27,6 +27,13 @@ function operate (op, left, right){
     }
 }
 
+function adjustNumLength(num){
+    if(String(num).length > 6){
+        return num.toPrecision(6);
+    }
+    return num;
+}
+
 const calculation = document.querySelector(".calculation p");
 const buttons = document.querySelectorAll("button");
 const answer = document.querySelector(".answer p");
@@ -85,7 +92,7 @@ buttons.forEach(button =>{
                         console.log(currentNum);
                         console.log(secondNum);
                         tempNum = operate(currentNum[1], parseInt(currentNum[0]), parseInt(secondNum));
-                        answer.innerText = tempNum;
+                        answer.innerText = adjustNumLength(tempNum);
                         //re-adjust the currentNum array
                         currentNum = [String(tempNum), button.innerText];
                         //decrement the amount of numbers
@@ -104,12 +111,33 @@ buttons.forEach(button =>{
                 secondNum = secondNum.join("");
                 console.log(secondNum);
                 tempNum = operate(currentNum[1], parseInt(currentNum[0]), parseInt(secondNum));
-                answer.innerText = tempNum;
+                answer.innerText = adjustNumLength(tempNum);
                 console.log(currentNum);
                 currentNum = [];
                 amountOfNum = 0;
                 previousAns = tempNum;
             }
+        } else if(button.innerText == "CE"){
+            while(currentCalc.length > 0){
+                if(currentCalc[currentCalc.length-1].match(num)){
+                    currentCalc.splice(currentCalc.length-1, 1);
+                } else {
+                    break;
+                }
+                console.log(currentCalc);
+                if(currentNum[currentNum.length-1].match(num)){
+                    currentNum.splice(currentNum.length-1, 1);
+                } else {
+                    break;
+                }
+                console.log(currentNum);
+            }
+        } else if(button.innerText == "AC"){
+            previousAns = 0;
+            currentCalc = [];
+            currentNum = []; currentOp = ""; nextOp = "";
+            amountOfNum = 0; firstNum = null; secondNum = null; tempNum = null;
+            answer.innerText = 0;
         }
         
         calculation.innerText = currentCalc.join("");
