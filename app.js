@@ -32,7 +32,7 @@ function operate (op, left, right){
 
 function adjustNumLength(num){
     if(String(num).length > 6){
-        return num.toPrecision(5);
+        return num.toFixed(5);
     }
     return num;
 }
@@ -114,7 +114,6 @@ buttons.forEach(button =>{
                 currentCalc = [];
             }
             if(answer.innerText == "Error"){
-                console.log("CurrentNum includes Error");
                 previousAns = 0;
                 currentCalc = [];
                 currentNum = []; currentOp = ""; nextOp = "";
@@ -144,15 +143,11 @@ buttons.forEach(button =>{
                         firstNum = currentNum.join("");
                         firstNum = firstNum.split(`${button.innerText}`);
                         firstNum = firstNum[0];
-                        console.log(firstNum);
                         currentNum = [firstNum, button.innerText];
                     } else if(amountOfNum == 2){
                         //calculate the first operation
-                        console.log("made it here");
                         secondNum = currentNum.slice(2, currentNum.length-1);
                         secondNum = secondNum.join("");
-                        console.log(currentNum);
-                        console.log(secondNum);
                         tempNum = operate(currentNum[1], parseFloat(currentNum[0]), parseFloat(secondNum));
                         answer.innerText = adjustNumLength(tempNum);
                         //re-adjust the currentNum array
@@ -171,10 +166,8 @@ buttons.forEach(button =>{
                 currentNum.push(button.innerText);
                 secondNum = currentNum.slice(2, currentNum.length-1);
                 secondNum = secondNum.join("");
-                console.log(secondNum);
                 tempNum = operate(currentNum[1], parseFloat(currentNum[0]), parseFloat(secondNum));
                 answer.innerText = adjustNumLength(tempNum);
-                console.log(currentNum);
                 currentNum = [];
                 amountOfNum = 0;
                 previousAns = tempNum;
@@ -186,7 +179,6 @@ buttons.forEach(button =>{
                 } else {
                     break;
                 }
-                console.log(currentCalc);
                 if(currentNum[currentNum.length-1].match(num)){
                     currentNum.splice(currentNum.length-1, 1);
                 } else {
