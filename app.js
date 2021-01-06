@@ -14,6 +14,10 @@ function divide (left, right){
     return left / right;
 }
 
+function modulo (left, right){
+    return left % right;
+}
+
 function operate (op, left, right){
     switch(op){
         case "+":
@@ -27,6 +31,11 @@ function operate (op, left, right){
                 return "Error";
             }
             return divide(left,right);
+        case "%":
+            if(right == 0){
+                return "Error";
+            }
+            return modulo(left,right);
     }
 }
 
@@ -49,7 +58,7 @@ let num, op, amountOfNum = 0, firstNum = null, secondNum = null, tempNum = null;
 buttons.forEach(button =>{
     button.addEventListener("click", ()=>{
         num = /[0-9]/;
-        op = /\+|-|\/|\*/;
+        op = /\+|-|\/|\*|\%/;
         if(button.innerText == "."){
             if(currentCalc.includes(" = ")){
                 currentCalc = [];
@@ -100,7 +109,6 @@ buttons.forEach(button =>{
                 previousAns = 0;
             }
             if(answer.innerText == "Error"){
-                console.log("CurrentNum includes Error");
                 previousAns = 0;
                 currentCalc = [];
                 currentNum = []; currentOp = ""; nextOp = "";
@@ -184,7 +192,6 @@ buttons.forEach(button =>{
                 } else {
                     break;
                 }
-                console.log(currentNum);
             }
         } else if(button.innerText == "AC"){
             previousAns = 0;
