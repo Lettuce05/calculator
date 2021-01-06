@@ -23,13 +23,16 @@ function operate (op, left, right){
         case "*":
             return multiply(left,right);
         case "/":
+            if(right == 0){
+                return "Error";
+            }
             return divide(left,right);
     }
 }
 
 function adjustNumLength(num){
     if(String(num).length > 6){
-        return num.toPrecision(6);
+        return num.toPrecision(5);
     }
     return num;
 }
@@ -46,18 +49,77 @@ let num, op, amountOfNum = 0, firstNum = null, secondNum = null, tempNum = null;
 buttons.forEach(button =>{
     button.addEventListener("click", ()=>{
         num = /[0-9]/;
-        op = /[+-/*]/;
-        if(button.innerText.match(num)){
+        op = /\+|-|\/|\*/;
+        if(button.innerText == "."){
             if(currentCalc.includes(" = ")){
                 currentCalc = [];
                 answer.textContent = 0;
                 previousAns = 0;
+            } 
+            if(answer.innerText == "Error"){
+                console.log("CurrentNum includes Error");
+                previousAns = 0;
+                currentCalc = [];
+                currentNum = []; currentOp = ""; nextOp = "";
+                amountOfNum = 0; firstNum = null; secondNum = null; tempNum = null;
+                answer.innerText = 0;
+            }
+            if(amountOfNum < 1){
+                if(currentNum.length == 0){
+                    currentCalc.push(button.innerText);
+                    currentNum.push(button.innerText);
+                } else {
+                    for(let i = 0; i < currentNum.length; i++){
+                        if(i == currentNum.length-1 && currentNum[i] != "."){
+                            currentCalc.push(button.innerText);
+                            currentNum.push(button.innerText);
+                        } else if(currentNum[i] != "."){
+                            continue;
+                        } else{
+                            break;
+                        }
+                    }
+                }
+            } else if(amountOfNum >= 1){
+                for(let i = currentNum.length-1; i > 0; i--){
+                    if(currentNum[i].match(op) && currentNum[i] != "."){
+                        currentCalc.push(button.innerText);
+                        currentNum.push(button.innerText);
+                        break;
+                    } else if(currentNum[i] != "."){
+                        continue;
+                    } else{
+                        break;
+                    }
+                }
+            }
+        } else if(button.innerText.match(num)){
+            if(currentCalc.includes(" = ")){
+                currentCalc = [];
+                answer.textContent = 0;
+                previousAns = 0;
+            }
+            if(answer.innerText == "Error"){
+                console.log("CurrentNum includes Error");
+                previousAns = 0;
+                currentCalc = [];
+                currentNum = []; currentOp = ""; nextOp = "";
+                amountOfNum = 0; firstNum = null; secondNum = null; tempNum = null;
+                answer.innerText = 0;
             }
             currentCalc.push(button.innerText);
             currentNum.push(button.innerText);
         } else if(button.innerText.match(op)){
             if(currentCalc.includes(" = ")){
                 currentCalc = [];
+            }
+            if(answer.innerText == "Error"){
+                console.log("CurrentNum includes Error");
+                previousAns = 0;
+                currentCalc = [];
+                currentNum = []; currentOp = ""; nextOp = "";
+                amountOfNum = 0; firstNum = null; secondNum = null; tempNum = null;
+                answer.innerText = 0;
             }
 
             currentCalc.push(` ${button.innerText} `);
@@ -68,7 +130,7 @@ buttons.forEach(button =>{
                 currentNum = [String(previousAns), button.innerText];
                 amountOfNum++;
                 if(currentCalc[0].match(op)){
-                    currentCalc = [previousAns, ` ${button.innerText} `];
+                    currentCalc = [String(adjustNumLength(previousAns)), ` ${button.innerText} `];
                 }
                 
             } else{
@@ -91,7 +153,7 @@ buttons.forEach(button =>{
                         secondNum = secondNum.join("");
                         console.log(currentNum);
                         console.log(secondNum);
-                        tempNum = operate(currentNum[1], parseInt(currentNum[0]), parseInt(secondNum));
+                        tempNum = operate(currentNum[1], parseFloat(currentNum[0]), parseFloat(secondNum));
                         answer.innerText = adjustNumLength(tempNum);
                         //re-adjust the currentNum array
                         currentNum = [String(tempNum), button.innerText];
@@ -110,7 +172,7 @@ buttons.forEach(button =>{
                 secondNum = currentNum.slice(2, currentNum.length-1);
                 secondNum = secondNum.join("");
                 console.log(secondNum);
-                tempNum = operate(currentNum[1], parseInt(currentNum[0]), parseInt(secondNum));
+                tempNum = operate(currentNum[1], parseFloat(currentNum[0]), parseFloat(secondNum));
                 answer.innerText = adjustNumLength(tempNum);
                 console.log(currentNum);
                 currentNum = [];
