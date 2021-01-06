@@ -40,8 +40,24 @@ function operate (op, left, right){
 }
 
 function adjustNumLength(num){
-    if(String(num).length > 6){
-        return num.toFixed(5);
+    let length = String(num).length;
+    let before = 0, after = 0,passed = false;
+    if(length > 6){
+        for(let i = 0; i < length; i++){
+            if(String(num)[i] == "."){
+                passed = true;
+                continue;
+            }
+            if(!passed){
+                before++;
+            } else if(passed){
+                after++;
+            }
+        }
+        if(before > 7 || after > 7){
+            return num.toExponential(2);
+        }
+        return num.toFixed(7-before);
     }
     return num;
 }
